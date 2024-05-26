@@ -3,6 +3,7 @@ plugins {
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
+    id 'com.google.gms.google-services'
 }
 
 def localProperties = new Properties()
@@ -12,6 +13,13 @@ if (localPropertiesFile.exists()) {
         localProperties.load(reader)
     }
 }
+
+
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:33.0.0')
+    implementation 'com.google.firebase:firebase-analytics'
+}
+
 
 def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
 if (flutterVersionCode == null) {

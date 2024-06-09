@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_trainer/data/models/drawer_navigation_item_model.dart';
+import 'package:my_trainer/data/models/widgets/drawer_navigation_item_model.dart';
 
 List<String> userRoles = ['admin', 'coach', 'client'];
 

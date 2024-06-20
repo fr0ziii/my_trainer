@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
-import 'package:my_trainer/common/screens/home_screen.dart';
-import '../../data/repositories/firestore.dart';
-import '../../data/repositories/user_repository.dart';
+
+import '/services/user_service.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -25,13 +25,12 @@ class LoginScreen extends StatelessWidget {
           );
         }
 
-        checkIfUserExists(snapshot.data!.uid).then((exists) {
-          print(exists);
+        UserService().checkIfUserExists(snapshot.data!.uid).then((exists) {
           if (exists) {
             return const HomeScreen();
           }
 
-          UserRepository().addUser(
+          UserService().addUser(
             snapshot.data!.uid,
             {
               'uid': snapshot.data!.uid,
@@ -41,16 +40,9 @@ class LoginScreen extends StatelessWidget {
             },
           );
         });
+
         return const HomeScreen();
       },
     );
   }
-}
-
-Future<bool> checkIfUserExists(String uid) async {
-  var user = await FirestoreRepository().getDocument('users', uid);
-  if (user.exists) {
-    return true;
-  }
-  return false;
 }

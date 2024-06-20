@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_trainer/data/models/widgets/drawer_navigation_item_model.dart';
+import '/views/widgets/drawer_navigation_item_model.dart';
 
 List<String> userRoles = ['admin', 'coach', 'client'];
 
 const TextStyle titleHomeStyle =
-TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
+    TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
 
 const List<dynamic> navigationItems = <DrawerNavigationItemModel>[
   DrawerNavigationItemModel(

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FirestoreRepository {
+class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> addDocument(String collection, Map<String, dynamic> data) async {

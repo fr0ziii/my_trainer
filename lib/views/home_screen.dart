@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:my_trainer/common/constants.dart';
+import 'package:my_trainer/utils/constants.dart';
+
+import 'calendar/calendar_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,6 +24,15 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       screenIndex = selectedScreen;
     });
+
+    if (screenIndex == 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const CalendarScreen(),
+        ),
+      );
+    }
   }
 
   @override
@@ -68,7 +79,12 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 FloatingActionButton(
                   child: const Icon(Icons.calendar_month_outlined),
-                  onPressed: () => Navigator.pushNamed(context, '/calendar'),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CalendarScreen(),
+                    ),
+                  ),
                 ),
               ],
             )

@@ -16,6 +16,7 @@ class LoginScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return SignInScreen(
+
             providers: [
               GoogleProvider(
                   clientId:
@@ -40,7 +41,6 @@ class LoginScreen extends StatelessWidget {
             },
           );
         });
-
         return const HomeScreen();
       },
     );

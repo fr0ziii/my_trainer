@@ -1,13 +1,18 @@
+import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:my_trainer/view_models/auth_view_model.dart';
 import 'package:my_trainer/views/home_screen.dart';
 import 'package:my_trainer/views/login_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_localizations/syncfusion_localizations.dart';
+
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(
     ChangeNotifierProvider(
@@ -24,6 +29,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        FirebaseUILocalizations.withDefaultOverrides(const EsLocalizations()),
+        FirebaseUILocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        SfGlobalLocalizations.delegate,
+      ],
       title: 'MyTrainer',
       theme: ThemeData(
         fontFamily: 'Roboto',
@@ -38,9 +50,9 @@ class MyApp extends StatelessWidget {
       home: Consumer<AuthViewModel>(
         builder: (context, authViewModel, _) {
           if (authViewModel.currentUser != null) {
-            return const HomeScreen(); // Reemplaza con tu pantalla principal
+            return const HomeScreen();
           } else {
-            return const LoginScreen(); // Reemplaza con tu pantalla de inicio de sesión
+            return const LoginScreen();
           }
         },
       ),

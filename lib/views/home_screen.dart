@@ -3,7 +3,9 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_trainer/utils/constants.dart';
 
-import 'calendar/calendar_view.dart';
+import 'calendar/calendar_screen.dart';
+import 'dashboard_screen.dart';
+import 'widgets/bottom_navbar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,37 +19,51 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int screenIndex = 0;
   User user = FirebaseAuth.instance.currentUser!;
 
-  void handleScreenChanged(int selectedScreen) {
-    setState(() {
-      screenIndex = selectedScreen;
-    });
+  int _selectedIndex = 0;
 
-    if (screenIndex == 0) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const CalendarScreen(),
-        ),
-      );
-    }
+  void navigateBottomBar(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
+
+  final List<Widget> _pages = [
+    const DashboardScreen(),
+    const CalendarScreen(),
+    const CalendarScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      bottomNavigationBar: BottomNavbar(
+        onTabChange: (index) => navigateBottomBar(index),
+      ),
+      body: _pages[_selectedIndex],
+      appBar: AppBar(
+        backgroundColor: Colors.grey[100],
+        elevation: 0,
+        leading: Builder(builder: (context) {
+          return IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          );
+        }),
+      ),
       drawer: NavigationDrawer(
-        onDestinationSelected: handleScreenChanged,
-        selectedIndex: screenIndex,
+        backgroundColor: Colors.grey[200],
+        onDestinationSelected: navigateBottomBar,
+        selectedIndex: _selectedIndex,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(28, 16, 16, 10),
             child: Text(
               'Inicio',
-              style: Theme.of(context).textTheme.titleSmall,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           ...navigationItems.map(
@@ -67,29 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
             variant: ButtonVariant.text,
           ),
         ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Text('Welcome, ${user.displayName}', style: titleHomeStyle),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                FloatingActionButton(
-                  child: const Icon(Icons.calendar_month_outlined),
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CalendarScreen(),
-                    ),
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
       ),
     );
   }

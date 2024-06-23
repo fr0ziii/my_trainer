@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import '../services/auth_service.dart';
+import '../services/firestore_service.dart';
 
 class AuthViewModel extends ChangeNotifier {
   final AuthService _authService = AuthService();
+  final FirestoreService _firestoreService = FirestoreService();
   String? errorMessage;
 
   User? get currentUser => _authService.currentUser;
@@ -25,7 +27,8 @@ class AuthViewModel extends ChangeNotifier {
 
   Future<void> signIn(String email, String password) async {
     try {
-      String? userId = await _authService.signInWithEmailAndPassword(email, password);
+      String? userId =
+          await _authService.signInWithEmailAndPassword(email, password);
       if (userId != null) {
         // Inicio de sesión exitoso, puedes navegar a la pantalla principal
       } else {
@@ -42,4 +45,5 @@ class AuthViewModel extends ChangeNotifier {
     // Puedes realizar acciones adicionales después de cerrar sesión si es necesario
     notifyListeners();
   }
+
 }

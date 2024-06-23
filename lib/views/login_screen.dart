@@ -16,7 +16,6 @@ class LoginScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return SignInScreen(
-
             providers: [
               GoogleProvider(
                   clientId:
@@ -27,19 +26,17 @@ class LoginScreen extends StatelessWidget {
         }
 
         UserService().checkIfUserExists(snapshot.data!.uid).then((exists) {
-          if (exists) {
-            return const HomeScreen();
+          if (!exists) {
+            UserService().addUser(
+              snapshot.data!.uid,
+              {
+                'uid': snapshot.data!.uid,
+                'email': snapshot.data!.email,
+                'displayName': snapshot.data!.displayName,
+                'role': 'client',
+              },
+            );
           }
-
-          UserService().addUser(
-            snapshot.data!.uid,
-            {
-              'uid': snapshot.data!.uid,
-              'email': snapshot.data!.email,
-              'displayName': snapshot.data!.displayName,
-              'role': 'client',
-            },
-          );
         });
         return const HomeScreen();
       },

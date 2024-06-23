@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_trainer/utils/constants.dart';
+import 'package:provider/provider.dart';
 
+import '../view_models/auth_view_model.dart';
 import 'calendar/calendar_screen.dart';
 import 'dashboard_screen.dart';
 import 'widgets/bottom_navbar.dart';
@@ -10,17 +12,12 @@ import 'widgets/bottom_navbar.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-  get user => FirebaseAuth.instance.currentUser;
-
   @override
   State<StatefulWidget> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
-  User user = FirebaseAuth.instance.currentUser!;
-
   int _selectedIndex = 0;
 
   void navigateBottomBar(int index) {
@@ -37,17 +34,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
       bottomNavigationBar: BottomNavbar(
         onTabChange: (index) => navigateBottomBar(index),
       ),
       body: _pages[_selectedIndex],
       appBar: AppBar(
-        backgroundColor: Colors.grey[100],
         elevation: 0,
+        backgroundColor: Colors.blue.shade400,
         leading: Builder(builder: (context) {
           return IconButton(
             icon: const Icon(Icons.menu),
+            color: Colors.white,
             onPressed: () {
               Scaffold.of(context).openDrawer();
             },
@@ -55,16 +54,14 @@ class _HomeScreenState extends State<HomeScreen> {
         }),
       ),
       drawer: NavigationDrawer(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.white,
         onDestinationSelected: navigateBottomBar,
         selectedIndex: _selectedIndex,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(28, 16, 16, 10),
-            child: Text(
-              'Inicio',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
+          Container(
+            height: 150,
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset('assets/logo.png'),
           ),
           ...navigationItems.map(
             (navigationItem) {
@@ -79,8 +76,12 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.fromLTRB(28, 16, 28, 10),
             child: Divider(),
           ),
-          const SignOutButton(
-            variant: ButtonVariant.text,
+          ListTile(
+            title: Text('Cerrar sesión'),
+            onTap: () {
+              authViewModel.signOut();
+              Navigator.pop(context);
+              },
           ),
         ],
       ),

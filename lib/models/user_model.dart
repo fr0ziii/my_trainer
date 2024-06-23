@@ -6,12 +6,12 @@ class UserModel {
   final String? displayName;
   final String role;
   final String? profilePictureUrl;
-  final DateTime registrationDate;
-  final String? trainerId; // ID del entrenador (para clientes)
-  final List<String>? clientIds; // IDs de los clientes (para entrenadores)
-  final String? invitationCode; // Código de invitación (para entrenadores)
-  final int? availableSlots; // Número de plazas disponibles (para entrenadores)
-  final List<String>? sessionIds; // IDs de las sesiones (para entrenadores)
+  final DateTime? registrationDate;
+  final String? trainerId;
+  final List<String>? clientIds;
+  final String? invitationCode; // Código de invitación
+  final int? availableSlots;
+  final List<String>? sessionIds;
 
   UserModel({
     required this.uid,
@@ -19,7 +19,7 @@ class UserModel {
     required this.displayName,
     required this.role,
     this.profilePictureUrl,
-    required this.registrationDate,
+    this.registrationDate,
     this.trainerId,
     this.clientIds,
     this.invitationCode,
@@ -27,7 +27,6 @@ class UserModel {
     this.sessionIds,
   });
 
-  // Convert UserModel to a map
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
@@ -35,7 +34,7 @@ class UserModel {
       'displayName': displayName,
       'role': role,
       'profilePictureUrl': profilePictureUrl,
-      'registrationDate': registrationDate.toIso8601String(),
+      'registrationDate': registrationDate?.toIso8601String(),
       'trainerId': trainerId,
       'clientIds': clientIds,
       'invitationCode': invitationCode,
@@ -44,7 +43,6 @@ class UserModel {
     };
   }
 
-  // Create a UserModel from a map
   factory UserModel.fromMap(Map<String, dynamic> json) {
     return UserModel(
       uid: json['uid'] ?? '',
@@ -52,7 +50,7 @@ class UserModel {
       displayName: json['displayName'],
       role: json['role'],
       profilePictureUrl: json['profilePictureUrl'],
-      registrationDate: DateTime.parse(json['registrationDate']),
+      registrationDate: json['registrationDate'],
       trainerId: json['trainerId'],
       clientIds: List<String>.from(json['clientIds'] ?? []),
       invitationCode: json['invitationCode'],
@@ -61,7 +59,6 @@ class UserModel {
     );
   }
 
-  // Create a UserModel from a Firestore document
   factory UserModel.fromDocument(DocumentSnapshot doc) {
     return UserModel.fromMap(doc.data() as Map<String, dynamic>);
   }

@@ -28,4 +28,12 @@ class FirestoreService {
   Future<void> getDocumentOfCollection(String collection) async {
     await _firestore.collection(collection).get();
   }
+
+  Future<DocumentSnapshot> getUserModel(String uid) async {
+    try {
+      return await _firestore.collection('users').doc(uid).get();
+    } catch (e) {
+      throw Exception('Error fetching user document: $e');
+    }
+  }
 }

@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../models/user_model.dart';
+import '../services/auth_service.dart';
+import '../services/user_service.dart';
+import '../view_models/auth_view_model.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -8,8 +14,13 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  late UserModel _currentUserModel;
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
+    UserService().getUser(authViewModel.currentUser!.uid).then((userModel) {
+      _currentUserModel = userModel;
+    });
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: SafeArea(
@@ -23,12 +34,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Bienvenido, Usuario',
+                          Text('Bienvenido, ${_currentUserModel.role}',
                               style: TextStyle(
                                   fontSize: 24,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
-                          Text('22 Jun', style: TextStyle(color: Colors.grey[400]))
+                          Text('22 Jun',
+                              style: TextStyle(color: Colors.grey[400]))
                         ],
                       ),
                       Container(

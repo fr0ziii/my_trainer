@@ -21,4 +21,9 @@ class UserService {
     }
     return false;
   }
+
+  Future<UserModel> getUserModel(String id) async {
+    var documentSnapshot = await FirestoreService().getDocument(usersCollections, id);
+    return UserModel.fromDocument(documentSnapshot);
+  }
 }

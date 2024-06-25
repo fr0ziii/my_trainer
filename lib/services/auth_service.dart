@@ -1,18 +1,31 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_trainer/services/user_service.dart';
+
+import '../models/user_model.dart';
 
 class AuthService with ChangeNotifier {
   User? _user;
+  UserModel? _userModel;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Stream<User?> get authStateChanges => _auth.authStateChanges();
 
   AuthService() {
     _auth.authStateChanges().listen(_onAuthStateChanged);
   }
 
+
   User? get currentUser => _user;
+  UserModel? get currentUserModel => _userModel;
 
   Future<void> _onAuthStateChanged(User? user) async {
     _user = user;
+    if (user != null) {
+      UserService().getUser(user.uid).then((userModel) {
+        _userModel = userModel;
+      });
+    }
     notifyListeners();
   }
 
@@ -27,7 +40,6 @@ class AuthService with ChangeNotifier {
       notifyListeners();
       return _user!.uid;
     } catch (e) {
-      print('Error en el registro: $e');
       return null;
     }
   }
@@ -43,7 +55,6 @@ class AuthService with ChangeNotifier {
       notifyListeners();
       return _user!.uid;
     } catch (e) {
-      print('Error en el inicio de sesión: $e');
       return null;
     }
   }

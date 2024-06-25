@@ -1,32 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:provider/provider.dart';
+
+import '../../view_models/auth_view_model.dart';
 
 class BottomNavbar extends StatelessWidget {
   void Function(int)? onTabChange;
+
   BottomNavbar({super.key, required this.onTabChange});
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
     return Container(
-      color: Colors.blue.shade400,
-      padding: const EdgeInsets.all(8.0),
+        color: Colors.white,
+        padding: const EdgeInsets.all(8.0),
         child: GNav(
-            color: Colors.blue.shade100,
-            backgroundColor: Colors.blue.shade400,
-            activeColor: Colors.blue.shade50,
+            color: Colors.grey.shade400,
+            backgroundColor: Colors.white,
+            gap: 4,
+            activeColor: Colors.grey.shade800,
             mainAxisAlignment: MainAxisAlignment.center,
             tabBorderRadius: 20,
-            tabBackgroundColor: Colors.blue.shade300,
+            iconSize: 20,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            tabBackgroundColor: Colors.grey.shade100,
             onTabChange: (value) => onTabChange!(value),
-            tabs: const [
-          GButton(
-            icon: Icons.home,
-            text: ' Inicio',
-          ),
-          GButton(
-            icon: Icons.calendar_month_outlined,
-            text: ' Calendario',
-          ),
-        ]));
+            tabs: [
+              GButton(
+                icon: Icons.home,
+                text: ' Inicio',
+              ),
+              GButton(
+                icon: Icons.calendar_month_outlined,
+                text: 'Agenda',
+              ),
+              authViewModel.currentUserModel?.role == 'trainer'
+                  ? GButton(
+                      icon: Icons.people,
+                      text: 'Clientes',
+                    )
+                  : GButton(
+                      icon: Icons.person,
+                      text: 'Mi perfil',
+                    ),
+              authViewModel.currentUserModel?.role == 'trainer'
+                  ? GButton(
+                      icon: Icons.wallet,
+                      text: 'Pagos',
+                    )
+                  : GButton(
+                      icon: Icons.payment,
+                      text: 'Mi subscrición',
+                    ),
+            ]));
   }
 }

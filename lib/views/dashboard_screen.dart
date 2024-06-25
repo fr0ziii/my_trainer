@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../models/user_model.dart';
-import '../services/auth_service.dart';
-import '../services/user_service.dart';
 import '../view_models/auth_view_model.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -14,13 +10,12 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  late UserModel _currentUserModel;
+  bool isLoading = true;
+
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
-    UserService().getUser(authViewModel.currentUser!.uid).then((userModel) {
-      _currentUserModel = userModel;
-    });
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: SafeArea(
@@ -34,13 +29,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Bienvenido, ${_currentUserModel.role}',
+                          Text(
+                              'Bienvenido, ${authViewModel.currentUserModel?.role}',
                               style: TextStyle(
                                   fontSize: 24,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold)),
-                          Text('22 Jun',
-                              style: TextStyle(color: Colors.grey[400]))
+                          Visibility(
+                            visible: authViewModel.currentUserModel?.role == 'trainer',
+                            child: Text('Código de invitación: ${authViewModel.currentUserModel?.invitationCode ?? ''}',
+                                style: TextStyle(color: Colors.grey[400])),
+                          )
                         ],
                       ),
                       Container(

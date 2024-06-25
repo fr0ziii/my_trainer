@@ -5,31 +5,32 @@ import 'firestore_service.dart';
 
 class EventService {
   final FirestoreService _firestoreService = FirestoreService();
+  final String _collectionPath = 'events';
 
   Future<void> createEvent(EventModel event) async {
-    await _firestoreService.addDocument('events', event.toMap());
+    await _firestoreService.addDocument(_collectionPath, event.toMap());
   }
 
   Future<EventModel> getEvent(String id) async {
     final DocumentSnapshot doc =
-        await _firestoreService.getDocument('events', id);
+        await _firestoreService.getDocument(_collectionPath, id);
     return EventModel.fromDocument(doc);
   }
 
   Future<void> updateEvent(EventModel event) async {
-    await _firestoreService.updateDocument('events', event.id, event.toMap());
+    await _firestoreService.updateDocument(_collectionPath, event.id, event.toMap());
   }
 
   Future<void> deleteEvent(String id) async {
-    await _firestoreService.deleteDocument('events', id);
+    await _firestoreService.deleteDocument(_collectionPath, id);
   }
 
   Future<void> setEvent(EventModel event) async {
-    await _firestoreService.setDocument('events', event.id, event.toMap());
+    await _firestoreService.setDocument(_collectionPath, event.id, event.toMap());
   }
 
   Stream<List<EventModel>> getEvents() {
-    return FirebaseFirestore.instance.collection("events").snapshots().map((snapshot) {
+    return FirebaseFirestore.instance.collection(_collectionPath).snapshots().map((snapshot) {
       return snapshot.docs.map((doc) => EventModel.fromDocument(doc)).toList();
     });
   }

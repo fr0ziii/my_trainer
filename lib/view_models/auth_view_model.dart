@@ -1,21 +1,21 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../models/user_model.dart';
 import '../services/auth_service.dart';
-import '../services/firestore_service.dart';
 
 class AuthViewModel extends ChangeNotifier {
   final AuthService _authService = AuthService();
-  final FirestoreService _firestoreService = FirestoreService();
   String? errorMessage;
 
   User? get currentUser => _authService.currentUser;
+  UserModel? get currentUserModel => _authService.currentUserModel;
+
+  Stream<User?> get authStateChanges => _authService.authStateChanges;
 
   Future<void> signUp(String email, String password) async {
     try {
       String? userId = await _authService.register(email, password);
       if (userId != null) {
-        // Registro exitoso, puedes realizar acciones adicionales aquí si es necesario
       } else {
         errorMessage = 'Error en el registro';
       }
@@ -45,5 +45,4 @@ class AuthViewModel extends ChangeNotifier {
     // Puedes realizar acciones adicionales después de cerrar sesión si es necesario
     notifyListeners();
   }
-
 }

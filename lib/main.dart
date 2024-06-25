@@ -2,11 +2,15 @@ import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:my_trainer/view_models/auth_view_model.dart';
-import 'package:my_trainer/views/home_screen.dart';
-import 'package:my_trainer/views/login_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
+
+
+
+import '/view_models/auth_view_model.dart';
+import '/views/home_screen.dart';
+import '/views/login_screen.dart';
+
 
 import 'firebase_options.dart';
 
@@ -33,12 +37,15 @@ class MyApp extends StatelessWidget {
         FirebaseUILocalizations.withDefaultOverrides(const EsLocalizations()),
         FirebaseUILocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         SfGlobalLocalizations.delegate,
       ],
+      supportedLocales: const [Locale('es', 'ES')],
       title: 'MyTrainer',
       theme: ThemeData(
         fontFamily: 'Roboto',
+        primaryColor: Colors.blue.shade400,
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
@@ -46,7 +53,7 @@ class MyApp extends StatelessWidget {
         ),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
-      locale: const Locale('es'),
+      locale: const Locale('es', 'ES'),
       home: Consumer<AuthViewModel>(
         builder: (context, authViewModel, _) {
           if (authViewModel.currentUser != null) {

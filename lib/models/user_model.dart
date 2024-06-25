@@ -6,7 +6,7 @@ class UserModel {
   final String? displayName;
   final String role;
   final String? profilePictureUrl;
-  final DateTime? registrationDate;
+  final String? registrationDate;
   final String? trainerId;
   final List<String>? clientIds;
   final String? invitationCode; // Código de invitación
@@ -34,7 +34,7 @@ class UserModel {
       'displayName': displayName,
       'role': role,
       'profilePictureUrl': profilePictureUrl,
-      'registrationDate': registrationDate?.toIso8601String(),
+      'registrationDate': registrationDate,
       'trainerId': trainerId,
       'clientIds': clientIds,
       'invitationCode': invitationCode,

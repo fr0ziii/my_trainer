@@ -49,6 +49,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   syncfusion_localizations: ^25.2.7
+  uuid: ^4.4.0
+  google_fonts: ^6.2.1
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:

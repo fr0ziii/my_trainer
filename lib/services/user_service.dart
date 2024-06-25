@@ -15,7 +15,7 @@ class UserService {
   }
 
   Future<bool> checkIfUserExists(String id) async {
-    var user = await FirestoreService().getDocument('users', id);
+    var user = await FirestoreService().getDocument(usersCollections, id);
     if (user.exists) {
       return true;
     }
@@ -26,4 +26,5 @@ class UserService {
     var documentSnapshot = await FirestoreService().getDocument(usersCollections, id);
     return UserModel.fromDocument(documentSnapshot);
   }
+
 }

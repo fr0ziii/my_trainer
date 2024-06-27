@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../../models/event_model.dart';
@@ -22,9 +23,25 @@ class _CalendarPageState extends State<CalendarScreen> {
     _eventService.getEvents().listen((events) {
       setState(() {
         _appointments = events.map((event) {
+          DateTime sessionDateTime = DateTime.parse(event.sessionDate);
+          DateTime startTime = DateTime(
+            sessionDateTime.year,
+            sessionDateTime.month,
+            sessionDateTime.day,
+            DateFormat("hh").parse(event.startTime).hour,
+            DateFormat("mm").parse(event.startTime).minute,
+          );
+          DateTime endTime = DateTime(
+            sessionDateTime.year,
+            sessionDateTime.month,
+            sessionDateTime.day,
+            DateFormat("hh").parse(event.endTime).hour,
+            DateFormat("mm").parse(event.endTime).minute,
+          );
+          print(event.toMap());
           return Appointment(
-            startTime: event.date,
-            endTime: event.date.add(event.duration),
+            startTime: startTime,
+            endTime: endTime,
             subject: event.title,
             color: Colors.blue,
           );

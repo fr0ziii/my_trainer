@@ -44,13 +44,13 @@ class MyApp extends StatelessWidget {
       supportedLocales: const [Locale('es', 'ES')],
       title: 'MyTrainer',
       theme: ThemeData(
-        fontFamily: 'Roboto',
         primaryColor: Colors.blue.shade400,
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
           iconSize: 28,
         ),
+        scaffoldBackgroundColor: Colors.white,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
       locale: const Locale('es', 'ES'),

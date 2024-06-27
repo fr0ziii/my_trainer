@@ -44,7 +44,6 @@ class _CalendarPageState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     CalendarController calendarController = CalendarController();
-
     return Scaffold(
       body: SfCalendar(
         showNavigationArrow: true,

@@ -18,7 +18,8 @@ class InputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 16),
-      child: Column(
+      child:
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -26,8 +27,9 @@ class InputField extends StatelessWidget {
             style: titleStyle,
           ),
           Container(
-            height: 52,
-            margin: const EdgeInsets.only(top: 8),
+            height: 50,
+            margin: const EdgeInsets.only(top: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey, width: 1),
               borderRadius: BorderRadius.circular(12),
@@ -36,6 +38,7 @@ class InputField extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextFormField(
+                    readOnly: widget == null ? false : true,
                     autofocus: false,
                     controller: controller,
                     style: subtitleStyle,
@@ -43,11 +46,11 @@ class InputField extends StatelessWidget {
                       hintText: hint,
                       hintStyle: subtitleStyle,
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
                     ),
                   ),
                 ),
-                if (widget != null) widget!, // Puedes agregar más widgets aquí
+                widget == null ? Container(): Container(child: widget) // Puedes agregar más widgets aquí
               ],
             )
           )

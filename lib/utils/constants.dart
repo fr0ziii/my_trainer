@@ -7,14 +7,19 @@ List<String> userRoles = ['admin', 'coach', 'client'];
 const TextStyle titleHomeStyle =
     TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
 
+TextStyle get appTitleStyle {
+  return GoogleFonts.aBeeZee(
+      textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black));
+}
+
 TextStyle get titleStyle {
-  return GoogleFonts.roboto(
+  return GoogleFonts.aBeeZee(
       textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black));
 }
 
 TextStyle get subtitleStyle {
-  return GoogleFonts.roboto(
-      textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey.shade400));
+  return GoogleFonts.aBeeZee(
+      textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey.shade600));
 }
 
 const List<dynamic> navigationItems = <DrawerNavigationItemModel>[

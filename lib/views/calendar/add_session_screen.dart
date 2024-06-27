@@ -302,6 +302,15 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                         },
                       ),
                       Text('Hasta el día', style: titleStyle),
+                      SizedBox(width: 8),
+                      Text(DateFormat.yMd('es_ES').format(_selectedDate), style: subtitleStyle),
+                      SizedBox(width: 8),
+                      GestureDetector(
+                        onTap: () {
+                          _getPeriodicDateTime();
+                        },
+                        child: Icon(Icons.edit_calendar_outlined),
+                      ),
                     ]),
                   ]
                 ),

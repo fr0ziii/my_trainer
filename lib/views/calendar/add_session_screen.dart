@@ -23,6 +23,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
   final _selectedDateController = TextEditingController();
 
   DateTime _selectedDate = DateTime.now();
+  DateTime _periodicSelectedDate = DateTime.now();
 
   String _startTime = DateFormat("hh:mm").format(DateTime.now()).toString();
   String _endTime = DateFormat("hh:mm")
@@ -30,7 +31,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
       .toString();
 
   bool? _repeat = false;
-  bool? periodic = false;
+  bool? periodic = true;
   List<String> _selectedDays = [];
 
   final _formKey = GlobalKey<FormState>();
@@ -114,6 +115,20 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
     } else if (isStart == false) {
       setState(() {
         _endTime = hour;
+      });
+    }
+  }
+
+  _getPeriodicDateTime() async {
+    DateTime? pickerDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime.now().add(const Duration(days: 365)));
+
+    if (pickerDate != null) {
+      setState(() {
+        _periodicSelectedDate = pickerDate;
       });
     }
   }
@@ -250,47 +265,55 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                       ],
                     ),
                     InputField(label: 'Cada cuántas semanas', hint: ''),
-                    Container(
-                        height: 12,
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Column(children: [
-                          Row(children: [
-                            Radio(
-                              value: true,
-                              groupValue: periodic,
-                              onChanged: (value) {
-                                setState(() {
-                                  periodic = value;
-                                });
-                              },
-                            ),
-                            Text('Sí123', style: titleStyle),
-                          ]),
-                          const SizedBox(width: 64),
-                          Row(children: [
-                            Radio(
-                              value: false,
-                              groupValue: periodic,
-                              onChanged: (value) {
-                                setState(() {
-                                  periodic = value;
-                                });
-                              },
-                            ),
-                            Text('No123', style: titleStyle),
-                          ]),
-                        ]))
+                    SizedBox(height: 16),
+                    Row(children: [
+                      Radio(
+                        value: true,
+                        groupValue: periodic,
+                        onChanged: (value) {
+                          setState(() {
+                            periodic = value;
+                          });
+                        },
+                      ),
+                      Text('Durante', style: titleStyle),
+                      SizedBox(width: 8), // Espacio entre widgets
+                      Container(
+                        width: 50, // Ancho del campo de texto
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      Text('semanas', style: titleStyle),
+                    ]),
+                    Row(children: [
+                      Radio(
+                        value: false,
+                        groupValue: periodic,
+                        onChanged: (value) {
+                          setState(() {
+                            periodic = value;
+                          });
+                        },
+                      ),
+                      Text('Hasta el día', style: titleStyle),
+                    ]),
                   ]
                 ),
-              ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _saveEvent,
-                child: Text('Guardar'),
               ),
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue.shade200,
+        onPressed: _saveEvent,
+        child: Icon(Icons.edit_calendar_outlined),
       ),
     );
   }

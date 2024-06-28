@@ -36,3 +36,12 @@ const List<dynamic> navigationItems = <DrawerNavigationItemModel>[
       icon: Icon(Icons.settings),
       selectedIcon: Icon(Icons.settings)),
 ];
+
+
+final Map<String, Color> sessionTypeColors = {
+  'Fisioterapia': Colors.green.shade200,
+  'Entrenamiento personal': Colors.blue.shade200,
+  'Crossfit': Colors.red.shade200,
+  'Yoga': Colors.purple.shade200,
+  'Boxeo': Colors.orange.shade200,
+};

@@ -27,9 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final List<Widget> _pages = [
-
-    const CalendarScreen(),
-
+    const DashboardScreen(),
     const CalendarScreen(),
     //Clientes o mi perfil
     const CalendarScreen(),
@@ -56,6 +54,26 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }),
       ),
+        drawer: NavigationDrawer(
+          onDestinationSelected: navigateBottomBar,
+          selectedIndex: _selectedIndex,
+          children: <Widget>[
+            Container(
+              height: 150,
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset('assets/icon.png'),
+            ),
+            ...navigationItems.map(
+                  (navigationItem) {
+                return NavigationDrawerDestination(
+                  label: Text(navigationItem.label, style: TextStyle(color: Colors.grey.shade900)),
+                  icon: navigationItem.icon,
+                  selectedIcon: navigationItem.selectedIcon,
+                );
+              },
+            )
+          ],
+        )
     );
   }
 }

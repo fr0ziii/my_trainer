@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_trainer/utils/constants.dart';
 import 'package:provider/provider.dart';
 import '../view_models/auth_view_model.dart';
 
@@ -29,12 +30,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                              'Bienvenido, ${authViewModel.currentUserModel?.role}',
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
+                          Text('Bienvenido, ${authViewModel.currentUserModel?.role}',
+                              style: TextStyle(fontSize: 24, color: Colors.black, fontWeight: FontWeight.bold)),
                           Visibility(
                             visible: authViewModel.currentUserModel?.role == 'trainer',
                             child: Text('Código de invitación: ${authViewModel.currentUserModel?.invitationCode ?? ''}',
@@ -54,7 +51,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                       )
                     ],
-                  )
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
                 ],
               ))),
     );

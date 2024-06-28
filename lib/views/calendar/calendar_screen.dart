@@ -4,6 +4,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../../models/event_model.dart';
 import '../../services/event_service.dart';
+import '../../utils/constants.dart';
 import 'add_session_screen.dart';
 
 class CalendarScreen extends StatefulWidget {
@@ -16,13 +17,20 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarPageState extends State<CalendarScreen> {
   final EventService _eventService = EventService();
   List<Appointment> _appointments = [];
+  List<EventModel> _events = [];
+
+  void parseSessionDate(String sessionDate) {
+
+  }
 
   @override
   void initState() {
     super.initState();
     _eventService.getEvents().listen((events) {
       setState(() {
+        _events = events;
         _appointments = events.map((event) {
+          Color appointmentColor = sessionTypeColors[event.sessionType] ?? Colors.blue.shade200;
           DateTime sessionDateTime = DateTime.parse(event.sessionDate);
           DateTime startTime = DateTime(
             sessionDateTime.year,
@@ -38,16 +46,20 @@ class _CalendarPageState extends State<CalendarScreen> {
             DateFormat("hh").parse(event.endTime).hour,
             DateFormat("mm").parse(event.endTime).minute,
           );
-          print(event.toMap());
           return Appointment(
+            id: event.id,
             startTime: startTime,
             endTime: endTime,
             subject: event.title,
-            color: Colors.blue,
+            color: appointmentColor,
           );
         }).toList();
       });
     });
+  }
+
+  EventModel? _getEventFromAppointment(Appointment appointment) {
+    return _events.firstWhere((event) => event.id == appointment.id);
   }
 
   void _openAddEditEventScreen([EventModel? event]) {
@@ -58,6 +70,7 @@ class _CalendarPageState extends State<CalendarScreen> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     CalendarController calendarController = CalendarController();
@@ -67,30 +80,40 @@ class _CalendarPageState extends State<CalendarScreen> {
         showTodayButton: true,
         showCurrentTimeIndicator: false,
         allowViewNavigation: true,
+        timeSlotViewSettings: TimeSlotViewSettings(
+            timeTextStyle: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 12,
+              color: Colors.grey.shade900,
+            ),
+            timeRulerSize: 50,
+            timeFormat: "HH:mm",
+            timeIntervalHeight: 75),
         view: CalendarView.week,
         allowedViews: const <CalendarView>[
           CalendarView.day,
           CalendarView.week,
-          CalendarView.workWeek,
           CalendarView.month,
           CalendarView.schedule
         ],
         cellBorderColor: Colors.grey.shade400,
         backgroundColor: Colors.white,
-        headerHeight: 75,
+        headerHeight: 60,
         headerStyle: CalendarHeaderStyle(
-          backgroundColor: Colors.white,
-            textStyle: TextStyle(
-                fontSize: 20,
-                fontStyle: FontStyle.normal,
-                letterSpacing: 1,
-                color: Colors.grey.shade700)
-        ),
+            textAlign: TextAlign.center,
+            backgroundColor: Colors.white,
+            textStyle:
+                TextStyle(fontSize: 20, fontStyle: FontStyle.normal, letterSpacing: 0.5, color: Colors.grey.shade700)),
         headerDateFormat: 'dd MMM yyyy',
         controller: calendarController,
         viewNavigationMode: ViewNavigationMode.snap,
         firstDayOfWeek: DateTime.monday,
+        appointmentTimeTextFormat: 'HH:mm',
         dataSource: EventDataSource(_appointments),
+        appointmentTextStyle: TextStyle(
+          fontSize: 10,
+          color: Colors.white,
+        ),
         monthViewSettings: const MonthViewSettings(
           showAgenda: true,
           dayFormat: 'EEE',

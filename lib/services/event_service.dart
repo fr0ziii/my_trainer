@@ -34,4 +34,14 @@ class EventService {
       return snapshot.docs.map((doc) => EventModel.fromDocument(doc)).toList();
     });
   }
+
+  Stream<List<EventModel>> getEventsByTrainer(String id) {
+    return FirebaseFirestore.instance
+        .collection(_collectionPath)
+        .where('trainerId', isEqualTo: id)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) => EventModel.fromDocument(doc)).toList();
+    });
+  }
 }

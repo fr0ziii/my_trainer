@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_trainer/utils/constants.dart';
 import 'package:provider/provider.dart';
 import '../view_models/auth_view_model.dart';
 
@@ -16,7 +15,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
-
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: SafeArea(

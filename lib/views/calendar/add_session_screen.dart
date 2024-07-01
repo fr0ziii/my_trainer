@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_trainer/services/auth_service.dart';
 import 'package:uuid/uuid.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 import '../../models/event_model.dart';
 import '../../services/event_service.dart';
@@ -21,22 +20,20 @@ class AddSessionScreen extends StatefulWidget {
 class _AddSessionScreenState extends State<AddSessionScreen> {
   final _titleController = TextEditingController();
   final _infoController = TextEditingController();
-  final _sessionTypeController = TextEditingController();
   final _selectedDateController = TextEditingController();
+  final _capacityController = TextEditingController();
 
   DateTime _selectedDate = DateTime.now();
   DateTime _periodicSelectedDate = DateTime.now();
 
-  String _startTime = DateFormat("hh:mm").format(DateTime.now()).toString();
-  String _endTime = DateFormat("hh:mm").format(DateTime.now().add(const Duration(minutes: 60))).toString();
+  DateTime _startTime = DateTime.now();
+  DateTime _endTime = DateTime.now().add(const Duration(minutes: 60));
 
   bool? _repeat = false;
   bool? periodic = true;
   List<String> _selectedDays = [];
 
   final _formKey = GlobalKey<FormState>();
-  late String _title;
-  late String _description;
   final EventService _eventService = EventService();
   final AuthService _authService = AuthService();
 
@@ -54,13 +51,6 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.event != null) {
-      _title = widget.event!.title;
-      _description = widget.event!.description;
-    } else {
-      _title = '';
-      _description = '';
-    }
   }
 
   void _saveEvent() {
@@ -71,13 +61,14 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
         id: widget.event?.id ?? Uuid().v4(),
         title: _titleController.text,
         sessionType: _selectedSessionType,
-        sessionDate: _selectedDate.toString(),
+        sessionDate: _selectedDate,
         startTime: _startTime,
         endTime: _endTime,
+        capacity: _capacityController.text.isEmpty ? 5 : int.parse(_capacityController.text),
         description: _infoController.text,
         userId: _authService.currentUser!.uid,
         trainerId: _authService.currentUser!.uid,
-        studentIds: [],
+        clientsIds: [],
       );
       events.add(event);
 
@@ -92,22 +83,21 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
             id: Uuid().v4(),
             title: _titleController.text,
             sessionType: _selectedSessionType,
-            sessionDate: nextDate.toString(),
+            sessionDate: nextDate,
             startTime: _startTime,
             endTime: _endTime,
+            capacity: _capacityController.text.isEmpty ? 5 : int.parse(_capacityController.text),
             description: _infoController.text,
             userId: _authService.currentUser!.uid,
             trainerId: _authService.currentUser!.uid,
-            studentIds: [],
+            clientsIds: [],
           );
           events.add(repeatEvent);
         }
-
       }
 
       for (var event in events) {
         _eventService.createEvent(event);
-        print(event.toMap());
       }
       Navigator.of(context).pop();
 
@@ -142,17 +132,14 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
 
   _getHour({required bool isStart}) async {
     var pickerHour = await _showTimePicker();
-
-    String hour = pickerHour.format(context);
-
     if (pickerHour == null) {
     } else if (isStart == true) {
       setState(() {
-        _startTime = hour;
+        _startTime = pickerHour;
       });
     } else if (isStart == false) {
       setState(() {
-        _endTime = hour;
+        _endTime = pickerHour;
       });
     }
   }
@@ -188,32 +175,48 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
               InputField(label: 'Título de la sesión', hint: '', controller: _titleController),
               InputField(label: 'Información de la sesión', hint: '', controller: _infoController),
               SizedBox(height: 16),
-              Row(children: [Text('Tipo de sesión', style: titleStyle)]),
-              Container(
-                height: 50,
-                margin: const EdgeInsets.only(top: 4),
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey, width: 1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: DropdownButton(
-                  dropdownColor: Colors.white,
-                  style: subtitleStyle,
-                  isExpanded: true,
-                  value: _selectedSessionType,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedSessionType = newValue!;
-                    });
-                  },
-                  items: sessionTypes.map((String value) {
-                    return DropdownMenuItem(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Tipo de sesión', style: titleStyle),
+                        Container(
+                          height: 50,
+                          margin: const EdgeInsets.only(top: 4),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: DropdownButton(
+                            dropdownColor: Colors.white,
+                            underline: Container(),
+                            style: subtitleStyle,
+                            isExpanded: true,
+                            value: _selectedSessionType,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedSessionType = newValue!;
+                              });
+                            },
+                            items: sessionTypes.map((String value) {
+                              return DropdownMenuItem(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 16),
+                  Expanded(child: InputField(label: 'Capacidad', hint: '', controller: _capacityController, keyboardType: TextInputType.number)),
+                ],
               ),
               InputField(
                   label: 'Fecha de la sesión',
@@ -229,7 +232,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                   Expanded(
                     child: InputField(
                         label: 'Hora de inicio',
-                        hint: _startTime,
+                        hint: DateFormat("HH:mm").format(_startTime).toString(),
                         widget: IconButton(
                             icon: Icon(Icons.access_time_outlined),
                             onPressed: () {
@@ -240,7 +243,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                   Expanded(
                     child: InputField(
                         label: 'Hora de fin',
-                        hint: _endTime,
+                        hint: DateFormat("HH:mm").format(_endTime).toString(),
                         widget: IconButton(
                             icon: Icon(Icons.access_time_outlined),
                             onPressed: () {

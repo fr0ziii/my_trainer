@@ -12,6 +12,10 @@ class AuthViewModel extends ChangeNotifier {
 
   Stream<User?> get authStateChanges => _authService.authStateChanges;
 
+  Future<UserModel?> getCurrentUser() async {
+    return await _authService.currentUserModel;
+  }
+
   Future<void> signUp(String email, String password) async {
     try {
       String? userId = await _authService.register(email, password);

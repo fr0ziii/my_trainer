@@ -50,10 +50,10 @@ class EventModel {
     return EventModel(
         id: json['id'],
         title: json['title'],
-        sessionDate: json['date'],
+        sessionDate: json['date'].toDate(),
         sessionType: json['sessionType'],
-        startTime: json['startTime'],
-        endTime: json['endTime'],
+        startTime: json['startTime'].toDate(),
+        endTime: json['endTime'].toDate(),
         capacity: json['capacity'],
         description: json['description'] ?? '',
         userId: json['userId'],

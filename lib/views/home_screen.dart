@@ -9,6 +9,7 @@ import '../view_models/auth_view_model.dart';
 import 'calendar/calendar_screen.dart';
 import 'dashboard_screen.dart';
 import 'widgets/bottom_navbar.dart';
+import 'widgets/payment_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,8 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const DashboardScreen(),
     const CalendarScreen(),
     const UsersScreen(),
-    //Pagos o mi subscripción
-    const CalendarScreen(),
+    const PaymentPage(),
   ];
 
   @override

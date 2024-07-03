@@ -41,6 +41,7 @@ class EventService {
         .where('trainerId', isEqualTo: id)
         .snapshots()
         .map((snapshot) {
+          print(snapshot.docs);
       return snapshot.docs.map((doc) => EventModel.fromDocument(doc)).toList();
     });
   }

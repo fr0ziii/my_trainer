@@ -1,21 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '/services/firestore_service.dart';
 
 import '../../models/user_model.dart';
 
-const usersCollections = 'users';
+const _collectionPath = 'users';
 
 class UserService {
+  final FirestoreService _firestoreService = FirestoreService();
+
   Future<void> addUser(String id, Map<String, dynamic> userData) async {
-    await FirestoreService().setDocument(usersCollections, id, userData);
+    await _firestoreService.setDocument(_collectionPath, id, userData);
   }
 
   Future<UserModel> getUser(String id) async {
-    return UserModel.fromDocument(
-        await FirestoreService().getDocument(usersCollections, id));
+    return UserModel.fromDocument(await _firestoreService.getDocument(_collectionPath, id));
   }
 
   Future<bool> checkIfUserExists(String id) async {
-    var user = await FirestoreService().getDocument(usersCollections, id);
+    var user = await _firestoreService.getDocument(_collectionPath, id);
     if (user.exists) {
       return true;
     }
@@ -23,8 +26,18 @@ class UserService {
   }
 
   Future<UserModel> getUserModel(String id) async {
-    var documentSnapshot = await FirestoreService().getDocument(usersCollections, id);
+    var documentSnapshot = await _firestoreService.getDocument(_collectionPath, id);
     return UserModel.fromDocument(documentSnapshot);
   }
 
+  Stream<List<UserModel>> getUsersByTrainer(String id) {
+    return FirebaseFirestore.instance
+        .collection(_collectionPath)
+        .where('trainerId', isEqualTo: id)
+        .where('role', isEqualTo: 'client')
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) => UserModel.fromDocument(doc)).toList();
+    });
+  }
 }

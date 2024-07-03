@@ -64,7 +64,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
         sessionDate: _selectedDate,
         startTime: _startTime,
         endTime: _endTime,
-        capacity: _capacityController.text.isEmpty ? 5 : int.parse(_capacityController.text),
+        capacity: _capacityController.text.isEmpty ? 10 : int.parse(_capacityController.text),
         description: _infoController.text,
         userId: _authService.currentUser!.uid,
         trainerId: _authService.currentUser!.uid,
@@ -127,7 +127,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
   }
 
   _showTimePicker() {
-    return showTimePicker(context: context, initialTime: TimeOfDay.now(), initialEntryMode: TimePickerEntryMode.input);
+    return showTimePicker(context: context, initialTime: TimeOfDay.now(), initialEntryMode: TimePickerEntryMode.dial);
   }
 
   _getHour({required bool isStart}) async {
@@ -135,11 +135,11 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
     if (pickerHour == null) {
     } else if (isStart == true) {
       setState(() {
-        _startTime = pickerHour;
+        _startTime = DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day, pickerHour.hour, pickerHour.minute);
       });
     } else if (isStart == false) {
       setState(() {
-        _endTime = pickerHour;
+        _endTime = DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day, pickerHour.hour, pickerHour.minute);
       });
     }
   }
@@ -174,7 +174,15 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
             children: <Widget>[
               InputField(label: 'Título de la sesión', hint: '', controller: _titleController),
               InputField(label: 'Información de la sesión', hint: '', controller: _infoController),
-              SizedBox(height: 16),
+              InputField(
+                  label: 'Fecha de la sesión',
+                  hint: DateFormat.yMd('es_ES').format(_selectedDate),
+                  controller: _selectedDateController,
+                  widget: IconButton(
+                      icon: Icon(Icons.calendar_today_outlined),
+                      onPressed: () {
+                        _getDateTime();
+                      })),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.alphabetic,
@@ -218,21 +226,12 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                   Expanded(child: InputField(label: 'Capacidad', hint: '', controller: _capacityController, keyboardType: TextInputType.number)),
                 ],
               ),
-              InputField(
-                  label: 'Fecha de la sesión',
-                  hint: DateFormat.yMd('es_ES').format(_selectedDate),
-                  controller: _selectedDateController,
-                  widget: IconButton(
-                      icon: Icon(Icons.calendar_today_outlined),
-                      onPressed: () {
-                        _getDateTime();
-                      })),
               Row(
                 children: [
                   Expanded(
                     child: InputField(
                         label: 'Hora de inicio',
-                        hint: DateFormat("HH:mm").format(_startTime).toString(),
+                        hint: DateFormat("HH:mm a").format(_startTime).toString(),
                         widget: IconButton(
                             icon: Icon(Icons.access_time_outlined),
                             onPressed: () {
@@ -243,7 +242,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                   Expanded(
                     child: InputField(
                         label: 'Hora de fin',
-                        hint: DateFormat("HH:mm").format(_endTime).toString(),
+                        hint: DateFormat("HH:mm a").format(_endTime).toString(),
                         widget: IconButton(
                             icon: Icon(Icons.access_time_outlined),
                             onPressed: () {
@@ -252,10 +251,10 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: 16),
                   Text(
                     '¿Quieres repetir esta sesión?',
                     style: titleStyle,

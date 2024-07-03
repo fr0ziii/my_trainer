@@ -148,6 +148,32 @@ class EventDataSource extends CalendarDataSource<EventModel> {
   }
 
   @override
+  DateTime getStartTime(int index) {
+    return appointments![index].startTime;
+  }
+
+  @override
+  DateTime getEndTime(int index) {
+    return appointments![index].endTime;
+  }
+
+  @override
+  Object? getId(int index) {
+    return appointments![index].id;
+  }
+
+  @override
+  Color getColor(int index) {
+    return sessionTypeColors[appointments![index].sessionType] ?? Colors.blue.shade200;
+  }
+
+  @override
+  String getSubject(int index) {
+    return appointments![index].title;
+  }
+
+
+  @override
   EventModel? convertAppointmentToObject(EventModel customData, Appointment appointment) {
     return EventModel(
       id: customData.id,
@@ -155,8 +181,8 @@ class EventDataSource extends CalendarDataSource<EventModel> {
       sessionDate: customData.sessionDate,
       sessionType: customData.sessionType,
       title: customData.title,
-      startTime: customData.startTime,
-      endTime: customData.endTime,
+      startTime: DateTime(customData.sessionDate.day, customData.sessionDate.month, customData.sessionDate.year, customData.startTime.hour, customData.startTime.minute),
+      endTime: DateTime(customData.sessionDate.day, customData.sessionDate.month, customData.sessionDate.year, customData.endTime.hour, customData.endTime.minute),
       capacity: customData.capacity,
       clientsIds: customData.clientsIds,
       trainerId: customData.trainerId,

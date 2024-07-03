@@ -7,7 +7,7 @@ class UserModel {
   final String role;
   final String? profilePictureUrl;
   final String? registrationDate;
-  final String? trainerId;
+  final String trainerId;
   final List<String>? clientIds;
   final String? invitationCode; // Código de invitación
   final int? availableSlots;
@@ -20,7 +20,7 @@ class UserModel {
     required this.role,
     this.profilePictureUrl,
     this.registrationDate,
-    this.trainerId,
+    required this.trainerId,
     this.clientIds,
     this.invitationCode,
     this.availableSlots,

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
   final String uid;
+  final String stripeCustomerId;
   final String email;
   final String? displayName;
   final String role;
@@ -16,6 +17,7 @@ class UserModel {
   UserModel({
     required this.uid,
     required this.email,
+    required this.stripeCustomerId,
     required this.displayName,
     required this.role,
     this.profilePictureUrl,
@@ -31,6 +33,7 @@ class UserModel {
     return {
       'uid': uid,
       'email': email,
+      'stripeCustomerId': stripeCustomerId,
       'displayName': displayName,
       'role': role,
       'profilePictureUrl': profilePictureUrl,
@@ -46,6 +49,7 @@ class UserModel {
   factory UserModel.fromMap(Map<String, dynamic> json) {
     return UserModel(
       uid: json['uid'] ?? '',
+      stripeCustomerId: json['stripeCustomerId'] ?? '',
       email: json['email'],
       displayName: json['displayName'],
       role: json['role'],

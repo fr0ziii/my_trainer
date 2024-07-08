@@ -28,8 +28,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Bienvenido, ${authViewModel.currentUserModel?.role}',
-                              style: TextStyle(fontSize: 24, color: Colors.black, fontWeight: FontWeight.bold)),
+                          Text('Bienvenido',
+                              style: TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold)),
+                          Text('${authViewModel.currentUserModel?.email}', style: TextStyle(fontSize: 18, color: Colors.grey.shade800, fontWeight: FontWeight.bold)),
                           Visibility(
                             visible: authViewModel.currentUserModel?.role == 'trainer',
                             child: Text('Código de invitación: ${authViewModel.currentUserModel?.invitationCode ?? ''}',

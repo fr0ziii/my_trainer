@@ -100,15 +100,6 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
         _eventService.createEvent(event);
       }
       Navigator.of(context).pop();
-
-      /*if (widget.event != null) {
-        _eventService.updateEvent(event);
-      } else {
-        _eventService.createEvent(event);
-      }
-
-      Navigator.of(context).pop();
-      */
     }
   }
 

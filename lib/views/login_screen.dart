@@ -3,12 +3,14 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 
+import '../services/stripe_service.dart';
 import '/utils/functions.dart';
 import '/services/user_service.dart';
 import 'home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -28,22 +30,26 @@ class LoginScreen extends StatelessWidget {
 
         UserService().checkIfUserExists(snapshot.data!.uid).then((exists) {
           if (!exists) {
-            UserService().addUser(
-              snapshot.data!.uid,
-              {
-                'uid': snapshot.data!.uid,
-                'email': snapshot.data!.email,
-                'displayName': snapshot.data!.displayName ?? 'Usuario',
-                'role': 'client',
-                'profilePictureUrl': snapshot.data!.photoURL,
-                'registrationDate': DateTime.now().toString(),
-                'trainerId': generateUniqueUid(snapshot.data!.uid),
-                'clientIds': [],
-                'invitationCode': generateUniqueInvitationCode(),
-                'availableSlots': 10,
-                'sessionIds': [],
-              },
-            );
+            StripeService().createCustomer(snapshot.data!.email!).then((stripeCustomer) {
+              UserService().addUser(
+                snapshot.data!.uid,
+                {
+                  'uid': snapshot.data!.uid,
+                  'email': snapshot.data!.email,
+                  'displayName': snapshot.data!.displayName ?? 'Usuario',
+                  'role': 'client',
+                  'profilePictureUrl': snapshot.data!.photoURL,
+                  'registrationDate': DateTime.now().toString(),
+                  'trainerId': generateUniqueUid(snapshot.data!.uid),
+                  'clientIds': [],
+                  'invitationCode': generateUniqueInvitationCode(),
+                  'availableSlots': 10,
+                  'sessionIds': [],
+                  'stripeCustomerId': stripeCustomer['id'],
+                },
+              );
+            }).catchError((error) {
+            });
           }
         });
         return const HomeScreen();

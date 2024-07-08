@@ -2,12 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_trainer/utils/constants.dart';
+import 'package:my_trainer/views/products/add_product_screen.dart';
 import 'package:my_trainer/views/users_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../view_models/auth_view_model.dart';
 import 'calendar/calendar_screen.dart';
 import 'dashboard_screen.dart';
+import 'products/product_screen.dart';
 import 'widgets/bottom_navbar.dart';
 import 'widgets/payment_screen.dart';
 
@@ -32,11 +34,16 @@ class _HomeScreenState extends State<HomeScreen> {
     const DashboardScreen(),
     const CalendarScreen(),
     const UsersScreen(),
-    const PaymentPage(),
+    const ProductsScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<AuthViewModel>(context).currentUserModel;
+    bool isClient = false;
+    if (user != null) {
+      isClient = user.role == 'client';
+    }
     return Scaffold(
       bottomNavigationBar: BottomNavbar(
         onTabChange: (index) => navigateBottomBar(index),
@@ -63,6 +70,13 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Image.asset('assets/icon.png'),
             ),
+            if (isClient)
+              ListTile(
+                title: Text('Quiero ser entrenador'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
             ...navigationItems.map(
                   (navigationItem) {
                 return NavigationDrawerDestination(
@@ -71,7 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   selectedIcon: navigationItem.selectedIcon,
                 );
               },
-            )
+            ),
+            SignOutButton(variant: ButtonVariant.text),
           ],
         )
     );

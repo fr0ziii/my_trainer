@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '/services/firestore_service.dart';
-
 import '../../models/user_model.dart';
-
 const _collectionPath = 'users';
 
 class UserService {
@@ -31,10 +28,7 @@ class UserService {
   }
 
   Stream<List<UserModel>> getUsersByTrainer(String id) {
-    return FirebaseFirestore.instance
-        .collection(_collectionPath)
-        .where('trainerId', isEqualTo: id)
-        .where('role', isEqualTo: 'client')
+    return FirebaseFirestore.instance.collection(_collectionPath).where('trainerId', isEqualTo: id).where('role', isEqualTo: 'client')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) => UserModel.fromDocument(doc)).toList();

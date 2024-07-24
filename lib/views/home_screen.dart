@@ -70,13 +70,6 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Image.asset('assets/icon.png'),
             ),
-            if (isClient)
-              ListTile(
-                title: Text('Quiero ser entrenador'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
             ...navigationItems.map(
                   (navigationItem) {
                 return NavigationDrawerDestination(

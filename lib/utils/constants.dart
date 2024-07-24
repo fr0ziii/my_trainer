@@ -35,6 +35,10 @@ const List<dynamic> navigationItems = <DrawerNavigationItemModel>[
       label: 'Ajustes',
       icon: Icon(Icons.settings),
       selectedIcon: Icon(Icons.settings)),
+  DrawerNavigationItemModel(
+      label: 'Quiero ser entrenador',
+      icon: Icon(Icons.account_box),
+      selectedIcon: Icon(Icons.account_box)),
 ];
 
 

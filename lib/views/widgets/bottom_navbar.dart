@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
-
 import '../../view_models/auth_view_model.dart';
 
-class BottomNavbar extends StatelessWidget {
-  void Function(int)? onTabChange;
 
-  BottomNavbar({super.key, required this.onTabChange});
+class BottomNavbar extends StatelessWidget {
+  final void Function(int)? onTabChange;
+
+  const BottomNavbar({super.key, required this.onTabChange});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class BottomNavbar extends StatelessWidget {
                     )
                   : GButton(
                       icon: Icons.person,
-                      text: 'Mi perfil',
+                      text: 'Mis clientes',
                     ),
               authViewModel.currentUserModel?.role == 'trainer'
                   ? GButton(
@@ -51,7 +51,7 @@ class BottomNavbar extends StatelessWidget {
                     )
                   : GButton(
                       icon: Icons.payment,
-                      text: 'Mi subscrición',
+                      text: 'Mis servicios',
                     ),
             ]));
   }

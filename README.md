@@ -137,4 +137,4 @@ Si deseas contribuir al proyecto, puedes hacerlo de varias maneras:
 
 ## Licencia
 
-Este proyecto está licenciado bajo la licencia MIT para la ULPGC.   
+Este proyecto está creado por David Iglesias Guerra para la ULPGC y licenciado bajo la licencia MIT.

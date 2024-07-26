@@ -11,7 +11,7 @@ import 'calendar/calendar_screen.dart';
 import 'dashboard_screen.dart';
 import 'products/product_screen.dart';
 import 'widgets/bottom_navbar.dart';
-import 'widgets/payment_screen.dart';
+import 'payments/payment_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,13 +23,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
-
   void navigateBottomBar(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
-
   final List<Widget> _pages = [
     const DashboardScreen(),
     const CalendarScreen(),
@@ -39,11 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AuthViewModel>(context).currentUserModel;
-    bool isClient = false;
-    if (user != null) {
-      isClient = user.role == 'client';
-    }
     return Scaffold(
       bottomNavigationBar: BottomNavbar(
         onTabChange: (index) => navigateBottomBar(index),

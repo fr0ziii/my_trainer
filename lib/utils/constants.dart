@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '/views/widgets/drawer_navigation_item_model.dart';
 
-List<String> userRoles = ['admin', 'coach', 'client'];
+List<String> userRoles = ['admin', 'trainer', 'client'];
 
 const TextStyle titleHomeStyle =
     TextStyle(fontSize: 24, fontWeight: FontWeight.bold);

@@ -11,6 +11,10 @@ class FirestoreService {
     return await _firestore.collection(collection).doc(id).get();
   }
 
+  Future<void> getDoc(String collection, String id) async {
+    await _firestore.collection(collection).doc(id).get();
+  }
+
   Future<void> updateDocument(
       String collection, String id, Map<String, dynamic> data) async {
     await _firestore.collection(collection).doc(id).update(data);
@@ -23,6 +27,11 @@ class FirestoreService {
   Future<void> setDocument(
       String collection, String id, Map<String, dynamic> data) async {
     await _firestore.collection(collection).doc(id).set(data);
+  }
+
+  Future<void> setDoc(
+      String collection, String id, Map<String, dynamic> data) async {
+    return await _firestore.collection(collection).doc(id).set(data);
   }
 
   Future<void> getDocumentOfCollection(String collection) async {

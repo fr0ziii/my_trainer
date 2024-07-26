@@ -31,7 +31,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
 
   bool? _repeat = false;
   bool? periodic = true;
-  List<String> _selectedDays = [];
+  final List<String> _selectedDays = [];
 
   final _formKey = GlobalKey<FormState>();
   final EventService _eventService = EventService();

@@ -45,18 +45,6 @@ class _CalendarPageState extends State<CalendarScreen> {
     });
   }
 
-  EventModel? _getEventFromAppointment(Appointment appointment) {
-    return _events.firstWhere((event) => event.id == appointment.id);
-  }
-
-  void _openAddEditEventScreen([EventModel? event]) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => AddSessionScreen(event: event),
-      ),
-    );
-  }
-
 
   @override
   Widget build(BuildContext context) {

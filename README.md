@@ -101,29 +101,30 @@ La aplicación está dividida en tres partes principales:
    flutter pub add firebase_messaging
    flutter pub add firebase_functions
    ```
+## Configuración de Android
+
+1. Configurar el proyecto para Android:
+    1. Abrir el proyecto en Android Studio.
+    2. Verificar que el archivo `google-services.json` está correctamente colocado en `android/app`.
+    3. Asegurarse de que las configuraciones de Gradle están correctamente configuradas.
+
+## Configuración de iOS
+
+1. Configurar el proyecto para iOS:
+    1. Abrir el proyecto en Xcode.
+    2. Verificar que el archivo GoogleService-Info.plist está correctamente colocado en ios/Runner.
+    3. Asegurarse de que las configuraciones de Pods están correctamente configuradas ejecutando:
+
+    ```    sh
+    cd ios
+    pod install
+    ```
+
 ## Ejecución de la aplicación
 1. Para ejecutar la aplicación en Android, debes tener instalado Android Studio o Visual Studio Code. Si no lo tienes instalado, puedes descargarlo desde el siguiente enlace: https://developer.android.com/studio
 2. Una vez que tengas Android Studio o Visual Studio Code instalado, abre el proyecto en este repositorio con tu IDE.
 3. Para ejecutar la aplicación en Android, debes tener instalado Android SDK. Si no lo tienes instalado, puedes descargarlo desde el siguiente enlace: https://developer.android.com/studio
-4. Una vez que tengas Android SDK instalado, abre el archivo build.gradle en el directorio android/app y agrega la siguiente línea al final del archivo:
-   ```sh
-   ext.kotlin_version = '1.8.10'
-   ```
-5. Abre el archivo local.properties en el directorio android y agrega las siguientes líneas al final del archivo:
-   ```sh
-   sdk.dir=/ruta/a/tu/sdk/android
-   flutter.sdk=/ruta/a/tu/sdk/flutter
-   flutter.buildMode=release
-   flutter.versionName=1.0.0
-   flutter.versionCode=1
-   ```
-6. Abre el archivo build.gradle en el directorio android/app y agrega las siguientes líneas al final del archivo:
-   ```sh
-   dependencies {
-       implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-   }
-   ```
-7. Ejecutar la aplicación:
+4. Ejecutar la aplicación:
    ```flutter run```
 
 ## Contribuir

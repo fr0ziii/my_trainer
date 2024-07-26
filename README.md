@@ -115,7 +115,7 @@ La aplicación está dividida en tres partes principales:
     2. Verificar que el archivo GoogleService-Info.plist está correctamente colocado en ios/Runner.
     3. Asegurarse de que las configuraciones de Pods están correctamente configuradas ejecutando:
 
-    ```    sh
+    ```sh
     cd ios
     pod install
     ```
